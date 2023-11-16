@@ -43,7 +43,7 @@ public class InvoiceController {
         invoiceDate  = System.today();
         dueDate = invoiceDate.addDays(14);
         paymentDetail = new paymentInfo();
-        customerDetail = new customerInfo ('Oceania USA', '345 Shoreline Park', 'Mountian View','CA','94043', 'USA');
+        customerDetail = new customerInfo ('Oceania USA', '500 Shoreline Park', 'Mountian View','NY','99098', 'USA');
     }
 
     // Inner class for invoice items
