@@ -1,5 +1,7 @@
 # Visualforce Invoice Template (PDF)
 
+![Invoice Template Screenshot](/images/invoice-template-screenshot.png)
+
 ## Overview
 This repository contains a Visualforce page that generates an invoice rendered as a PDF. It's designed for Salesforce platforms and is accompanied by an Apex controller and a static resource.
 
