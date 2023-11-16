@@ -1,0 +1,164 @@
+<apex:page controller="InvoiceController"
+  showHeader="false"
+  sidebar="false"
+  renderAs="pdf"
+  standardStylesheets="false"
+  applyHtmlTag="false"
+>
+  <head>
+    <style>
+      body {
+        font-family: "Times New Roman", serif;
+        font-size: 12px;
+        color: #333;
+      }
+      .invoice-header {
+        text-align: center;
+        padding: 20px;
+        border-bottom: 1px solid #aaa;
+      }
+      .invoice-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 40px;
+      }
+      .invoice-date {
+        margin-top: 5px;
+      }
+      .invoice-body {
+        padding: 15px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 8px;
+        border: 1px solid #aaa;
+      }
+      .center-align {
+        text-align: center;
+      }
+      .left-align {
+        text-align: left;
+      }
+      .right-align {
+        text-align: right;
+      }
+
+      .total {
+        text-align: right;
+        font-weight: bold;
+      }
+      .total-label {
+        display: inline-block;
+        text-align: right;
+        margin-right: 5px;
+      }
+      .invoice-footer {
+        text-align: center;
+        padding: 15px;
+        border-top: 1px solid #aaa;
+        font-size: 12px;
+      }
+      .invoice-logo {
+        position: absolute;
+        padding: 12px;
+        top: 12px;
+        left: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="invoice-logo">
+      <img
+        src="{!$Resource.CompanyLogo_Sample}"
+        alt="Company Logo"
+        height="50"
+      />
+    </div>
+    <div class="invoice-header">
+      <h1 class="invoice-title">INVOICE</h1>
+      <p class="invoice-date">
+        Date:&nbsp;
+        <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+          <apex:param value="{!invoiceDate}" />
+        </apex:outputText>
+      </p>
+    </div>
+    <div class="invoice-body">
+      <span> Invoice No:</span>
+      <apex:outputText value="{!invoiceNo}"> </apex:outputText>
+      <p>Billed to:</p>
+      <p>
+        <strong> {!customerDetail.customerName} </strong><br /> {!customerDetail.BillingStreet} <br /> 
+         {!customerDetail.BillingCity} {!customerDetail.BillingState} {!customerDetail.BillingPostalCode}<br />
+        {!customerDetail.BillingCountry}
+      </p>
+      <table>
+        <tr>
+          <th>Product Name</th>
+          <th class="center-align">Quantity</th>
+          <th class="center-align">Unit Price</th>
+          <th class="right-align">Amount</th>
+        </tr>
+        <apex:repeat value="{!purchaseItems}" var="item">
+          <tr>
+            <td>{!item.productName}</td>
+            <td class="center-align">
+              <apex:outputText value="{!item.quantity}"> </apex:outputText>
+            </td>
+            <td class="center-align">
+              <apex:outputText value="{0,number,#,##0.00}">
+                <apex:param value="{!item.unitPrice}" />
+              </apex:outputText>
+            </td>
+            <td class="right-align">
+              <apex:outputText value="{0,number,#,##0.00}">
+                <apex:param value="{!item.amount}" />
+              </apex:outputText>
+            </td>
+          </tr>
+        </apex:repeat>
+      </table>
+      <br />
+      <div class="total">
+        <span class="total-label">Subtotal:</span>
+        $ <apex:outputText value="{0,number,#,##0.00}">
+          <apex:param value="{!Subtotal}" />
+        </apex:outputText>
+        <br />
+        <span class="total-label">GST 10%:</span>
+        $ <apex:outputText value="{0,number,#,##0.00}">
+          <apex:param value="{!taxes}" />
+        </apex:outputText>
+        <br />
+        <span class="total-label">Total AUD:</span>
+        $ <apex:outputText value="{0,number,#,##0.00}">
+          <apex:param value="{!total}" />
+        </apex:outputText>
+        <br /><br /><br />
+        <div class="left-align">
+          <p>Payment instructions:</p>
+          <p>Account Name: {!paymentDetail.paymentAccountName}</p>
+          <p>Account Number: {!paymentDetail.paymentAccountNumber}</p>
+          <p>Bank Name: {!paymentDetail.paymentBankName}</p>
+          <p>BSB Number: {!paymentDetail.paymentBSBNumber}</p>
+          <span class="total-label">Pay by:</span>
+          <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+            <apex:param value="{!dueDate}" />
+          </apex:outputText>
+        </div>
+      </div>
+    </div>
+    <div class="invoice-footer">
+      <p>Thank you for your purchase!</p>
+      <p>
+        For further information, please contact us at
+        customerservice@abccompany.com
+      </p>
+    </div>
+  </body>
+</apex:page>
